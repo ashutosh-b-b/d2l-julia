@@ -29,17 +29,35 @@ struct FashionMNISTData{T,V,L,A} <: AbstractData
     val::V
     labels::L
     args::A
-    function FashionMNISTData(; batchsize = 64)
+    function FashionMNISTData(; batchsize = 64, resize = nothing)
         dataset = MLDatasets.FashionMNIST
         t = dataset(:train)[:]
         v = dataset(:test)[:]
+        t = if isnothing(resize) 
+            t 
+        else
+            features_resize = imresize(t.features, resize)
+            (features = features_resize, targets = t.targets)
+        end
+
+        v = if isnothing(resize) 
+            v 
+        else
+            features_resize = imresize(v.features, resize)
+            (features = features_resize, targets = v.targets)
+        end
         l = dataset().metadata["class_names"]
         args = (batchsize = batchsize,)
         new{typeof(t), typeof(v), typeof(l), typeof(args)}(t, v, l, args)
     end
 end
 
-function get_dataloader(data::FashionMNISTData; train = true)
+function get_dataloader(data::FashionMNISTData; train = true, flatten = false)
     d = train ? data.train : data.val 
-    return Flux.DataLoader((Flux.flatten(d[1]), d[2]); batchsize = data.args.batchsize, shuffle = train)
+    if flatten 
+        Flux.DataLoader((Flux.flatten(d[1]), d[2]); batchsize = data.args.batchsize, shuffle = train)
+    else
+        d_reshaped = reshape(d[1], size(d[1])[1], size(d[1])[2], 1, :)
+        Flux.DataLoader((d_reshaped, d[2]); batchsize = data.args.batchsize, shuffle = train)
+    end
 end

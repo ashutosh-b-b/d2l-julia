@@ -10,10 +10,19 @@ end
 function loss(model::AbstractModel, y_pred, y)
 end
 
+function loss(model::AbstractClassifier, y_pred, y)
+    Flux.crossentropy(y_pred, Flux.onehotbatch(y, 0:9))
+end
+
 function forward(model::AbstractModel, x)
+    model.net(x)
 end
 
 function accuracy(model::AbstractClassifier, y_pred, y; averaged = true)
+    y_labels = argmax(y_pred, dims = 1)
+    y_labels = getindex.(y_labels , 1)
+    compare = (y_labels .== (y' .+ 1))
+    return averaged ? mean(compare) : compare
 end
 
 # function accuracy(model::AbstractClassifier, y_pred, y; averaged = true)

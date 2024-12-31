@@ -8,3 +8,10 @@ function corr2d(X::AbstractArray, K::AbstractArray)
     end
     Y
 end
+
+function to_gpu(model)
+    Flux.fmap(model) do x
+        x isa AbstractArray || return x
+        Flux.gpu(x)
+    end
+end

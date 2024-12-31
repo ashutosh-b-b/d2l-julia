@@ -9,7 +9,7 @@ struct ProgressBoard
     anim::Animation
     function ProgressBoard(xlabel, y_labels = []; xscale = :identity, yscale = :identity, colors = [:blue, :red, :orange], size = (25, 25))
         plt = plot(fill([], length(y_labels)), fill([], length(y_labels)), xlabel = xlabel, xscale = xscale, yscale= yscale, labels  = y_labels)
-        labels_to_idx = Dict(y_labels .=> collect(1:length(y_labels)))
+        labels_to_idx = Dict(vec(y_labels) .=> collect(1:length(y_labels)))
         new(xlabel, xscale, yscale, colors, size, plt, labels_to_idx, Animation())
     end    
 end
