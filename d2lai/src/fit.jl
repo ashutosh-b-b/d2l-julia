@@ -17,12 +17,12 @@
 
 function fit_epoch(model::AbstractModel, opt; train_dataloader = nothing, val_dataloader = nothing)
     losses = (train_losses = [], val_losses = [], val_acc = [])
+    state = Flux.setup(opt, model)
     for batch in train_dataloader
-        ps = Flux.params(model)
-        gs = gradient(ps) do 
-            training_step(model, batch)
+        gs = gradient(model) do m
+            training_step(m, batch)
         end
-        Flux.Optimise.update!(opt, ps, gs)
+        Flux.Optimise.update!(state, model, gs[1])
         train_loss = training_step(model, batch)
         push!(losses.train_losses, train_loss)
     end
