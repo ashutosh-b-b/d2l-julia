@@ -48,10 +48,10 @@ function fit(trainer::Trainer)
     num_val_batches = length(vd)
     for epoch in 1:trainer.args.max_epochs 
         losses = fit_epoch(model, trainer.opt; train_dataloader = td, val_dataloader = vd)
-        draw(trainer, epoch, losses.train_losses, num_train_batches, "train_loss")
-        draw(trainer, epoch, losses.val_losses, num_val_batches, "val_loss")
+        draw(trainer.board, epoch, mean(losses.train_losses), "train_loss")
+        draw(trainer.board, epoch, mean(losses.val_losses), "val_loss")
         trainer.args.verbose && @info "Train Loss: $(losses.train_losses[end]), Val Loss: $(losses.val_losses[end]), Val Acc: $(losses.val_acc[end])"
-        !isempty(losses.val_acc) && draw(trainer, epoch, losses.val_acc, num_val_batches, "val_acc")
+        !isempty(losses.val_acc) && draw(trainer.board, epoch, mean(losses.val_acc), "val_acc")
     end
     trainer.args.verbose && display(trainer.board.plt)
     final_val_metrics = validation_step.(Ref(model), vd)
