@@ -18,6 +18,7 @@ cuDNN = "02a925ec-e4fe-4b08-9a7e-0d78e3d38ccd"
 
 [compat]
 Downloads = "1.6.0"
+Flux = "0.16.3"
 Scratch = "1.2.1"
 StatsBase = "0.34.4"
 julia = "1"
