@@ -15,7 +15,7 @@ function loss(model::AbstractClassifier, y_pred, y)
 end
 
 function forward(model::AbstractModel, x)
-    model.net(x)
+    model(x)
 end
 
 function accuracy(model::AbstractClassifier, y_pred, y; averaged = true)
@@ -52,5 +52,50 @@ function validation_step(m::AbstractClassifier, batch)
 end
 
 function configure_optimizers(m::AbstractModel)
+end
+
+
+abstract type AbstractRNNClassifier <: AbstractClassifier end
+
+
+function d2lai.loss(m::AbstractRNNClassifier, y_pred, y)
+    Flux.logitcrossentropy(y_pred, Flux.onehotbatch(y, 1:m.args.vocab_size))
+end
+
+function d2lai.training_step(m::AbstractRNNClassifier, batch)
+    y_pred = d2lai.forward(m, batch[1])
+    loss_ = d2lai.loss(m, y_pred, batch[end])
+    return loss_
+end
+
+function d2lai.validation_step(m::AbstractRNNClassifier, batch)
+    y_pred = d2lai.forward(m, batch[1])
+    loss_ = d2lai.loss(m, y_pred, batch[end])
+    return loss_ , nothing
+end
+
+function output_layer end
+
+function prediction(prefix, model::AbstractRNNClassifier, vocab, num_preds)
+    outputs = [vocab.token_to_idx[string(prefix[1])]]
+    state = zeros(32)
+    for i in 2:length(prefix)
+        x = outputs[end]
+        x = reshape(Flux.onehotbatch(x, 1:length(vocab)), :, 1, 1)
+        _, state = model.rnn(x, state)
+        push!(outputs, vocab.token_to_idx[string(prefix[i])])
+    end
+    for i in 1:num_preds 
+        x = outputs[end]
+        x = reshape(Flux.onehotbatch(x, 1:length(vocab)), :, 1, 1)
+        out, state = model.rnn(x, state)
+        out = output_layer(model, out)
+        idx = argmax(softmax(out), dims = 1)[1][1]
+        push!(outputs, idx)
+    end
+    out_chars = map(outputs) do o 
+        vocab.idx_to_token[o]
+    end
+    join(out_chars)
 end
 

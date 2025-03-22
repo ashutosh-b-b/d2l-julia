@@ -6,17 +6,17 @@ struct Trainer{M, D, P, O, A} <: AbstractTrainer
     board::P
     opt::O
     args::A
-    function Trainer(model::AbstractModel, data, opt; board_yscale = :log10, args...)
-        board = ProgressBoard("epochs", ["train_loss" "val_loss"]; yscale = board_yscale)
-        default_args = (verbose = true,)
+    function Trainer(model::AbstractModel, data, opt; board_yscale = :log10, metrics = ["train_loss" "val_loss"], args...)
+        board = ProgressBoard("epochs", []; yscale = board_yscale)
+        default_args = (verbose = true, gradient_clip_val = 0.)
         args = merge(default_args, args)
         new{typeof(model), typeof(data), typeof(board), typeof(opt), NamedTuple}(
             model, data, board, opt, NamedTuple(args)
         )
     end
     function Trainer(model::AbstractClassifier, data, opt; board_yscale = :log10, args...)
-        board = ProgressBoard("epochs", ["train_loss" "val_loss" "val_acc"]; yscale = board_yscale)
-        default_args = (verbose = true,)
+        board = ProgressBoard("epochs", []; yscale = board_yscale)
+        default_args = (verbose = true, gradient_clip_val = 0.)
         args = merge(default_args, args)
         new{typeof(model), typeof(data), typeof(board), typeof(opt), NamedTuple}(
             model, data, board, opt, NamedTuple(args)
@@ -40,22 +40,41 @@ function draw(trainer::AbstractTrainer, epoch, losses, n_batches, label)
     draw.(Ref(trainer.board), x, losses, Ref(label))
     
 end
+
+function draw_metrics(model::AbstractModel, epoch, trainer::Trainer, metrics)
+    draw(trainer.board, epoch, mean(metrics.train_losses), "train_loss")
+    draw(trainer.board, epoch, mean(metrics.val_losses), "val_loss")
+end
+
+function draw_metrics(model::AbstractClassifier, epoch, trainer::Trainer, metrics)
+    draw(trainer.board, epoch, mean(metrics.train_losses), "train_loss")
+    draw(trainer.board, epoch, mean(metrics.val_losses), "val_loss")
+    !isempty(metrics.val_acc) && draw(trainer.board, epoch, mean(metrics.val_acc), "val_acc")
+end
+
+function draw_metrics(model::AbstractRNNClassifier, epoch, trainer::Trainer, metrics)
+    draw(trainer.board, epoch, exp(mean(metrics.train_losses)), "train_ppl")
+    draw(trainer.board, epoch, exp(mean(metrics.val_losses)), "val_ppl")
+    !isempty(metrics.val_acc) && draw(trainer.board, epoch, mean(metrics.val_acc), "val_acc")
+end
+
 function fit(trainer::Trainer)
     train_on_gpu = get(trainer.args, :gpu, false)
+    print_every = get(trainer.args, :print_every, 1)
     td, vd = prepare_data(trainer.data, train_on_gpu)
     model = prepare_model(trainer.model, train_on_gpu)
-    num_train_batches = length(td)
-    num_val_batches = length(vd)
     for epoch in 1:trainer.args.max_epochs 
-        losses = fit_epoch(model, trainer.opt; train_dataloader = td, val_dataloader = vd)
-        draw(trainer.board, epoch, mean(losses.train_losses), "train_loss")
-        draw(trainer.board, epoch, mean(losses.val_losses), "val_loss")
-        if !isempty(losses.val_acc)
-            trainer.args.verbose && @info "Train Loss: $(losses.train_losses[end]), Val Loss: $(losses.val_losses[end]), Val Acc: $(losses.val_acc[end])"
-        else
-            trainer.args.verbose && @info "Train Loss: $(losses.train_losses[end]), Val Loss: $(losses.val_losses[end])"
+        losses = fit_epoch(model, trainer.opt; train_dataloader = td, val_dataloader = vd, gradient_clip_val = trainer.args.gradient_clip_val)
+        
+        if epoch % print_every == 0
+            if !isempty(losses.val_acc)
+                trainer.args.verbose && @info "Train Loss: $(losses.train_losses[end]), Val Loss: $(losses.val_losses[end]), Val Acc: $(losses.val_acc[end])"
+            else
+                trainer.args.verbose && @info "Train Loss: $(losses.train_losses[end]), Val Loss: $(losses.val_losses[end])"
+            end
         end
-        !isempty(losses.val_acc) && draw(trainer.board, epoch, mean(losses.val_acc), "val_acc")
+        draw_metrics(model, epoch, trainer, losses)
+
     end
     trainer.args.verbose && display(trainer.board.plt)
     final_val_metrics = validation_step.(Ref(model), vd)
