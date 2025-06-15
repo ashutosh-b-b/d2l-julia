@@ -53,7 +53,6 @@ makedocs(
     repo = "https://github.com/ashutosh-b-b/d2l-julia",
     pagesonly = true,
     pages = pages,
-    source = src_dir,
     build = joinpath(@__DIR__, "build"),
     warnonly = [:missing_docs],
     linkcheck = false,
