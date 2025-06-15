@@ -14,8 +14,8 @@ function loss(model::AbstractClassifier, y_pred, y)
     Flux.crossentropy(y_pred, Flux.onehotbatch(y, 0:9))
 end
 
-function forward(model::AbstractModel, x)
-    model(x)
+function forward(model::AbstractModel, x...)
+    model(x...)
 end
 
 function accuracy(model::AbstractClassifier, y_pred, y; averaged = true)
@@ -76,9 +76,11 @@ end
 
 function output_layer end
 
-function prediction(prefix, model::AbstractRNNClassifier, vocab, num_preds)
+
+
+function prediction(prefix, model::AbstractRNNClassifier, vocab, num_preds; state = nothing)
     outputs = [vocab.token_to_idx[string(prefix[1])]]
-    state = zeros(32)
+    state = state
     for i in 2:length(prefix)
         x = outputs[end]
         x = reshape(Flux.onehotbatch(x, 1:length(vocab)), :, 1, 1)
