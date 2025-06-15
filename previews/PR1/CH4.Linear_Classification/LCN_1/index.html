@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Softmax Regression · d2l Julia</title><meta name="title" content="Softmax Regression · d2l Julia"/><meta property="og:title" content="Softmax Regression · d2l Julia"/><meta property="twitter:title" content="Softmax Regression · d2l Julia"/><meta name="description" content="Documentation for d2l Julia."/><meta property="og:description" content="Documentation for d2l Julia."/><meta property="twitter:description" content="Documentation for d2l Julia."/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../CH3.Linear_Regression/LNN_1/">d2l Julia</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><span class="tocitem">Linear Neural Networks for Regression</span><ul><li><a class="tocitem" href="../../CH3.Linear_Regression/LNN_1/">Linear Regression</a></li><li><a class="tocitem" href="../../CH3.Linear_Regression/LNN_2/">Multiple Dispatch Design for Implementation</a></li><li><a class="tocitem" href="../../CH3.Linear_Regression/LNN_3/">Synthetic Regression Data</a></li><li><a class="tocitem" href="../../CH3.Linear_Regression/LNN_4/">Linear Regression Implementation from Scratch</a></li><li><a class="tocitem" href="../../CH3.Linear_Regression/LNN_5/">Concise Implementation of Linear Regression</a></li><li><a class="tocitem" href="../../CH3.Linear_Regression/LNN_6/">Generalization</a></li><li><a class="tocitem" href="../../CH3.Linear_Regression/LNN_7/">Weight Decay</a></li></ul></li><li><span class="tocitem">Linear Neural Networks for Classification</span><ul><li class="is-active"><a class="tocitem" href>Softmax Regression</a><ul class="internal"><li><a class="tocitem" href="#Classification"><span>Classification</span></a></li><li><a class="tocitem" href="#Summary-and-Discussion"><span>Summary and Discussion</span></a></li><li><a class="tocitem" href="#Exercises"><span>Exercises</span></a></li></ul></li><li><a class="tocitem" href="../LCN_2/">The Image Classification Dataset</a></li><li><a class="tocitem" href="../LCN_3/">Softmax Regression Implementation from Scratch</a></li><li><a class="tocitem" href="../LCN_4/">Concise Implementation of Softmax Regression</a></li><li><a class="tocitem" href="../LCN_5/">Generalization in Classification</a></li><li><a class="tocitem" href="../LCN_6/">Environment and Distribution Shift</a></li></ul></li><li><span class="tocitem">Multilayer Perceptron</span><ul><li><a class="tocitem" href="../../CH5.MLP/MLP_1/">Multilayer Perceptrons</a></li><li><a class="tocitem" href="../../CH5.MLP/MLP_2/">Implementation of Multilayer Perceptrons</a></li><li><a class="tocitem" href="../../CH5.MLP/MLP_3/">Forward Propagation, Backward Propagation, and Computational Graphs</a></li><li><a class="tocitem" href="../../CH5.MLP/MLP_4/">Numerical Stability and Initialization</a></li><li><a class="tocitem" href="../../CH5.MLP/MLP_5/">Generalization in Deep Learning</a></li><li><a class="tocitem" href="../../CH5.MLP/MLP_6/">Dropout</a></li></ul></li><li><span class="tocitem">Convolutional Neural Networks</span><ul><li><a class="tocitem" href="../../CH6.Convolutional_Neural_Networks/CNN_2/">Convolutions for Images</a></li><li><a class="tocitem" href="../../CH6.Convolutional_Neural_Networks/CNN_3/">Padding and Stride</a></li><li><a class="tocitem" href="../../CH6.Convolutional_Neural_Networks/CNN_4/">Multiple Input and Multiple Output Channels</a></li><li><a class="tocitem" href="../../CH6.Convolutional_Neural_Networks/CNN_5/">Pooling</a></li><li><a class="tocitem" href="../../CH6.Convolutional_Neural_Networks/CNN_6/">Convolutional Neural Networks (LeNet)</a></li></ul></li><li><span class="tocitem">Modern Convolutional Neural Networks</span><ul><li><a class="tocitem" href="../../CH7.ModernConvolutionalNeuralNetworks/MCNN_0/">Modern Convolutional Neural Networks</a></li><li><a class="tocitem" href="../../CH7.ModernConvolutionalNeuralNetworks/MCNN_1/">Deep Convolutional Neural Networks (AlexNet)</a></li><li><a class="tocitem" href="../../CH7.ModernConvolutionalNeuralNetworks/MCNN_2/">Networks Using Blocks (VGG)</a></li><li><a class="tocitem" href="../../CH7.ModernConvolutionalNeuralNetworks/MCNN_3/">-</a></li><li><a class="tocitem" href="../../CH7.ModernConvolutionalNeuralNetworks/MCNN_4/">Multi-Branch Networks  (GoogLeNet)</a></li><li><a class="tocitem" href="../../CH7.ModernConvolutionalNeuralNetworks/MCNN_5/">-</a></li><li><a class="tocitem" href="../../CH7.ModernConvolutionalNeuralNetworks/MCNN_6/">Residual Networks (ResNet) and ResNeXt</a></li><li><a class="tocitem" href="../../CH7.ModernConvolutionalNeuralNetworks/MCNN_7/">Densely Connected Networks (DenseNet)</a></li><li><a class="tocitem" href="../../CH7.ModernConvolutionalNeuralNetworks/MCNN_8/">Designing Convolution Network Architectures</a></li></ul></li><li><span class="tocitem">Recurrent Neural Networks</span><ul><li><a class="tocitem" href="../../CH8.Recurrent_Neural_Networks/RNN_0/">Recurrent Neural Networks</a></li><li><a class="tocitem" href="../../CH8.Recurrent_Neural_Networks/RNN_1/">Working with Sequences</a></li><li><a class="tocitem" href="../../CH8.Recurrent_Neural_Networks/RNN_2/">Converting Raw Text into Sequence Data</a></li><li><a class="tocitem" href="../../CH8.Recurrent_Neural_Networks/RNN_3/">Language Models</a></li><li><a class="tocitem" href="../../CH8.Recurrent_Neural_Networks/RNN_4/">Recurrent Neural Networks</a></li><li><a class="tocitem" href="../../CH8.Recurrent_Neural_Networks/RNN_5/">Recurrent Neural Network Implementation from Scratch</a></li><li><a class="tocitem" href="../../CH8.Recurrent_Neural_Networks/RNN_6/">Concise Implementation of Recurrent Neural Networks</a></li><li><a class="tocitem" href="../../CH8.Recurrent_Neural_Networks/RNN_7/">Backpropagation Through Time</a></li></ul></li><li><span class="tocitem">Modern Recurrent Neural Networks</span><ul><li><a class="tocitem" href="../../CH9.Modern_Recurrent_Neural_Networks/MRNN7/">Sequence-to-Sequence Learning for Machine Translation</a></li><li><a class="tocitem" href="../../CH9.Modern_Recurrent_Neural_Networks/MRNN_1/">Long Short-Term Memory (LSTM)</a></li><li><a class="tocitem" href="../../CH9.Modern_Recurrent_Neural_Networks/MRNN_2/">Gated Recurrent Units (GRU)</a></li><li><a class="tocitem" href="../../CH9.Modern_Recurrent_Neural_Networks/MRNN_3/">-</a></li><li><a class="tocitem" href="../../CH9.Modern_Recurrent_Neural_Networks/MRNN_4/">Bidirectional Recurrent Neural Networks</a></li><li><a class="tocitem" href="../../CH9.Modern_Recurrent_Neural_Networks/MRNN_5/">Machine Translation and the Dataset</a></li><li><a class="tocitem" href="../../CH9.Modern_Recurrent_Neural_Networks/MRNN_6/">The Encoder–Decoder Architecture</a></li></ul></li><li><span class="tocitem">Attention Mechanisms and Transformers</span><ul><li><a class="tocitem" href="../../CH10.Attention_Mechanisms_and_Transformers/ATTN_1/">Queries, Keys, and Values</a></li><li><a class="tocitem" href="../../CH10.Attention_Mechanisms_and_Transformers/ATTN_2/">Attention Pooling by Similarity</a></li><li><a class="tocitem" href="../../CH10.Attention_Mechanisms_and_Transformers/ATTN_3/">Attention Scoring Functions</a></li><li><a class="tocitem" href="../../CH10.Attention_Mechanisms_and_Transformers/ATTN_4/">The Bahdanau Attention Mechanism</a></li><li><a class="tocitem" href="../../CH10.Attention_Mechanisms_and_Transformers/ATTN_5/">Multi-Head Attention</a></li><li><a class="tocitem" href="../../CH10.Attention_Mechanisms_and_Transformers/ATTN_6/">Self-Attention and Positional Encoding</a></li><li><a class="tocitem" href="../../CH10.Attention_Mechanisms_and_Transformers/Untitled/">-</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Linear Neural Networks for Classification</a></li><li class="is-active"><a href>Softmax Regression</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Softmax Regression</a></li></ul></nav><div class="docs-right"><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Softmax-Regression"><a class="docs-heading-anchor" href="#Softmax-Regression">Softmax Regression</a><a id="Softmax-Regression-1"></a><a class="docs-heading-anchor-permalink" href="#Softmax-Regression" title="Permalink"></a></h1><p>:label:<code>sec_softmax</code></p><p>In :numref:<code>sec_linear_regression</code>, we introduced linear regression, working through implementations from scratch in :numref:<code>sec_linear_scratch</code> and again using high-level APIs of a deep learning framework in :numref:<code>sec_linear_concise</code> to do the heavy lifting.</p><p>Regression is the hammer we reach for when we want to answer <em>how much?</em> or <em>how many?</em> questions. If you want to predict the number of dollars (price) at which a house will be sold, or the number of wins a baseball team might have, or the number of days that a patient will remain hospitalized before being discharged, then you are probably looking for a regression model. However, even within regression models, there are important distinctions. For instance, the price of a house will never be negative and changes might often be <em>relative</em> to its baseline price. As such, it might be more effective to regress on the logarithm of the price. Likewise, the number of days a patient spends in hospital is a <em>discrete nonnegative</em> random variable. As such, least mean squares might not be an ideal approach either. This sort of time-to-event modeling comes with a host of other complications that are dealt with in a specialized subfield called <em>survival modeling</em>.</p><p>The point here is not to overwhelm you but just to let you know that there is a lot more to estimation than simply minimizing squared errors. And more broadly, there is a lot more to supervised learning than regression. In this section, we focus on <em>classification</em> problems where we put aside <em>how much?</em> questions and instead focus on <em>which category?</em> questions.</p><ul><li>Does this email belong in the spam folder or the inbox?</li><li>Is this customer more likely to sign up or not to sign up for a subscription service?</li><li>Does this image depict a donkey, a dog, a cat, or a rooster?</li><li>Which movie is Aston most likely to watch next?</li><li>Which section of the book are you going to read next?</li></ul><p>Colloquially, machine learning practitioners overload the word <em>classification</em> to describe two subtly different problems: (i) those where we are interested only in hard assignments of examples to categories (classes); and (ii) those where we wish to make soft assignments, i.e., to assess the probability that each category applies. The distinction tends to get blurred, in part, because often, even when we only care about hard assignments, we still use models that make soft assignments.</p><p>Even more, there are cases where more than one label might be true. For instance, a news article might simultaneously cover the topics of entertainment, business, and space flight, but not the topics of medicine or sports. Thus, categorizing it into one of the above categories on their own would not be very useful. This problem is commonly known as <a href="https://en.wikipedia.org/wiki/Multi-label_classification">multi-label classification</a>. See :citet:<code>Tsoumakas.Katakis.2007</code> for an overview and :citet:<code>Huang.Xu.Yu.2015</code> for an effective algorithm when tagging images.</p><h2 id="Classification"><a class="docs-heading-anchor" href="#Classification">Classification</a><a id="Classification-1"></a><a class="docs-heading-anchor-permalink" href="#Classification" title="Permalink"></a></h2><p>:label:<code>subsec_classification-problem</code></p><p>To get our feet wet, let&#39;s start with a simple image classification problem. Here, each input consists of a <span>$2\times2$</span> grayscale image. We can represent each pixel value with a single scalar, giving us four features <span>$x_1, x_2, x_3, x_4$</span>. Further, let&#39;s assume that each image belongs to one among the categories &quot;cat&quot;, &quot;chicken&quot;, and &quot;dog&quot;.</p><p>Next, we have to choose how to represent the labels. We have two obvious choices. Perhaps the most natural impulse would be to choose <span>$y \in \{1, 2, 3\}$</span>, where the integers represent <span>$\{\textrm{dog}, \textrm{cat}, \textrm{chicken}\}$</span> respectively. This is a great way of <em>storing</em> such information on a computer. If the categories had some natural ordering among them, say if we were trying to predict <span>$\{\textrm{baby}, \textrm{toddler}, \textrm{adolescent}, \textrm{young adult}, \textrm{adult}, \textrm{geriatric}\}$</span>, then it might even make sense to cast this as an <a href="https://en.wikipedia.org/wiki/Ordinal_regression">ordinal regression</a> problem and keep the labels in this format. See :citet:<code>Moon.Smola.Chang.ea.2010</code> for an overview of different types of ranking loss functions and :citet:<code>Beutel.Murray.Faloutsos.ea.2014</code> for a Bayesian approach that addresses responses with more than one mode.</p><p>In general, classification problems do not come with natural orderings among the classes. Fortunately, statisticians long ago invented a simple way to represent categorical data: the <em>one-hot encoding</em>. A one-hot encoding is a vector with as many components as we have categories. The component corresponding to a particular instance&#39;s category is set to 1 and all other components are set to 0. In our case, a label <span>$y$</span> would be a three-dimensional vector, with <span>$(1, 0, 0)$</span> corresponding to &quot;cat&quot;, <span>$(0, 1, 0)$</span> to &quot;chicken&quot;, and <span>$(0, 0, 1)$</span> to &quot;dog&quot;:</p><p class="math-container">\[y \in \{(1, 0, 0), (0, 1, 0), (0, 0, 1)\}.\]</p><h3 id="Linear-Model"><a class="docs-heading-anchor" href="#Linear-Model">Linear Model</a><a id="Linear-Model-1"></a><a class="docs-heading-anchor-permalink" href="#Linear-Model" title="Permalink"></a></h3><p>In order to estimate the conditional probabilities associated with all the possible classes, we need a model with multiple outputs, one per class. To address classification with linear models, we will need as many affine functions as we have outputs. Strictly speaking, we only need one fewer, since the final category has to be the difference between <span>$1$</span> and the sum of the other categories, but for reasons of symmetry we use a slightly redundant parametrization. Each output corresponds to its own affine function. In our case, since we have 4 features and 3 possible output categories, we need 12 scalars to represent the weights (<span>$w$</span> with subscripts), and 3 scalars to represent the biases (<span>$b$</span> with subscripts). This yields:</p><p class="math-container">\[
+\begin{aligned}
+o_1 &amp;= x_1 w_{11} + x_2 w_{12} + x_3 w_{13} + x_4 w_{14} + b_1,\\
+o_2 &amp;= x_1 w_{21} + x_2 w_{22} + x_3 w_{23} + x_4 w_{24} + b_2,\\
+o_3 &amp;= x_1 w_{31} + x_2 w_{32} + x_3 w_{33} + x_4 w_{34} + b_3.
+\end{aligned}
+$$
+
+The corresponding neural network diagram
+is shown in :numref:`fig_softmaxreg`.
+Just as in linear regression,
+we use a single-layer neural network.
+And since the calculation of each output, $o_1, o_2$, and $o_3$,
+depends on every input, $x_1$, $x_2$, $x_3$, and $x_4$,
+the output layer can also be described as a *fully connected layer*.
+
+![Softmax regression is a single-layer neural network.](../img/softmaxreg.svg)
+:label:`fig_softmaxreg`
+
+For a more concise notation we use vectors and matrices:
+$\mathbf{o} = \mathbf{W} \mathbf{x} + \mathbf{b}$ is
+much better suited for mathematics and code.
+Note that we have gathered all of our weights into a $3 \times 4$ matrix and all biases
+$\mathbf{b} \in \mathbb{R}^3$ in a vector.
+
+### The Softmax
+:label:`subsec_softmax_operation`
+
+Assuming a suitable loss function,
+we could try, directly, to minimize the difference
+between $\mathbf{o}$ and the labels $\mathbf{y}$.
+While it turns out that treating classification
+as a vector-valued regression problem works surprisingly well,
+it is nonetheless unsatisfactory in the following ways:
+
+* There is no guarantee that the outputs $o_i$ sum up to $1$ in the way we expect probabilities to behave.
+* There is no guarantee that the outputs $o_i$ are even nonnegative, even if their outputs sum up to $1$, or that they do not exceed $1$.
+
+Both aspects render the estimation problem difficult to solve
+and the solution very brittle to outliers.
+For instance, if we assume that there
+is a positive linear dependency
+between the number of bedrooms and the likelihood
+that someone will buy a house,
+the probability might exceed $1$
+when it comes to buying a mansion!
+As such, we need a mechanism to &quot;squish&quot; the outputs.
+
+There are many ways we might accomplish this goal.
+For instance, we could assume that the outputs
+$\mathbf{o}$ are corrupted versions of $\mathbf{y}$,
+where the corruption occurs by means of adding noise $\boldsymbol{\epsilon}$
+drawn from a normal distribution.
+In other words, $\mathbf{y} = \mathbf{o} + \boldsymbol{\epsilon}$,
+where $\epsilon_i \sim \mathcal{N}(0, \sigma^2)$.
+This is the so-called [probit model](https://en.wikipedia.org/wiki/Probit_model),
+first introduced by :citet:`Fechner.1860`.
+While appealing, it does not work quite as well
+nor lead to a particularly nice optimization problem,
+when compared to the softmax.
+
+Another way to accomplish this goal
+(and to ensure nonnegativity) is to use
+an exponential function $P(y = i) \propto \exp o_i$.
+This does indeed satisfy the requirement
+that the conditional class probability
+increases with increasing $o_i$, it is monotonic,
+and all probabilities are nonnegative.
+We can then transform these values so that they add up to $1$
+by dividing each by their sum.
+This process is called *normalization*.
+Putting these two pieces together
+gives us the *softmax* function:
+
+$$\hat{\mathbf{y}} = \mathrm{softmax}(\mathbf{o}) \quad \textrm{where}\quad \hat{y}_i = \frac{\exp(o_i)}{\sum_j \exp(o_j)}.\]</p><p>:eqlabel:<code>eq_softmax_y_and_o</code></p><p>Note that the largest coordinate of <span>$\mathbf{o}$</span> corresponds to the most likely class according to <span>$\hat{\mathbf{y}}$</span>. Moreover, because the softmax operation preserves the ordering among its arguments, we do not need to compute the softmax to determine which class has been assigned the highest probability. Thus,</p><p class="math-container">\[
+\operatorname*{argmax}_j \hat y_j = \operatorname*{argmax}_j o_j.
+$$
+
+
+The idea of a softmax dates back to :citet:`Gibbs.1902`,
+who adapted ideas from physics.
+Dating even further back, Boltzmann,
+the father of modern statistical physics,
+used this trick to model a distribution
+over energy states in gas molecules.
+In particular, he discovered that the prevalence
+of a state of energy in a thermodynamic ensemble,
+such as the molecules in a gas,
+is proportional to $\exp(-E/kT)$.
+Here, $E$ is the energy of a state,
+$T$ is the temperature, and $k$ is the Boltzmann constant.
+When statisticians talk about increasing or decreasing
+the &quot;temperature&quot; of a statistical system,
+they refer to changing $T$
+in order to favor lower or higher energy states.
+Following Gibbs&#39; idea, energy equates to error.
+Energy-based models :cite:`Ranzato.Boureau.Chopra.ea.2007`
+use this point of view when describing
+problems in deep learning.
+
+### Vectorization
+:label:`subsec_softmax_vectorization`
+
+To improve computational efficiency,
+we vectorize calculations in minibatches of data.
+Assume that we are given a minibatch $\mathbf{X} \in \mathbb{R}^{n \times d}$
+of $n$ examples with dimensionality (number of inputs) $d$.
+Moreover, assume that we have $q$ categories in the output.
+Then the weights satisfy $\mathbf{W} \in \mathbb{R}^{d \times q}$
+and the bias satisfies $\mathbf{b} \in \mathbb{R}^{1\times q}$.
+
+$$ \begin{aligned} \mathbf{O} &amp;= \mathbf{X} \mathbf{W} + \mathbf{b}, \\ \hat{\mathbf{Y}} &amp; = \mathrm{softmax}(\mathbf{O}). \end{aligned} $$
+:eqlabel:`eq_minibatch_softmax_reg`
+
+This accelerates the dominant operation into
+a matrix--matrix product $\mathbf{X} \mathbf{W}$.
+Moreover, since each row in $\mathbf{X}$ represents a data example,
+the softmax operation itself can be computed *rowwise*:
+for each row of $\mathbf{O}$, exponentiate all entries
+and then normalize them by the sum.
+Note, though, that care must be taken
+to avoid exponentiating and taking logarithms of large numbers,
+since this can cause numerical overflow or underflow.
+Deep learning frameworks take care of this automatically.
+
+## Loss Function
+:label:`subsec_softmax-regression-loss-func`
+
+Now that we have a mapping from features $\mathbf{x}$
+to probabilities $\mathbf{\hat{y}}$,
+we need a way to optimize the accuracy of this mapping.
+We will rely on maximum likelihood estimation,
+the very same method that we encountered
+when providing a probabilistic justification
+for the mean squared error loss in
+:numref:`subsec_normal_distribution_and_squared_loss`.
+
+### Log-Likelihood
+
+The softmax function gives us a vector $\hat{\mathbf{y}}$,
+which we can interpret as the (estimated) conditional probabilities
+of each class, given any input $\mathbf{x}$,
+such as $\hat{y}_1$ = $P(y=\textrm{cat} \mid \mathbf{x})$.
+In the following we assume that for a dataset
+with features $\mathbf{X}$ the labels $\mathbf{Y}$
+are represented using a one-hot encoding label vector.
+We can compare the estimates with reality
+by checking how probable the actual classes are
+according to our model, given the features:
+
+$$
+P(\mathbf{Y} \mid \mathbf{X}) = \prod_{i=1}^n P(\mathbf{y}^{(i)} \mid \mathbf{x}^{(i)}).
+$$
+
+We are allowed to use the factorization
+since we assume that each label is drawn independently
+from its respective distribution $P(\mathbf{y}\mid\mathbf{x}^{(i)})$.
+Since maximizing the product of terms is awkward,
+we take the negative logarithm to obtain the equivalent problem
+of minimizing the negative log-likelihood:
+
+$$
+-\log P(\mathbf{Y} \mid \mathbf{X}) = \sum_{i=1}^n -\log P(\mathbf{y}^{(i)} \mid \mathbf{x}^{(i)})
+= \sum_{i=1}^n l(\mathbf{y}^{(i)}, \hat{\mathbf{y}}^{(i)}),
+$$
+
+where for any pair of label $\mathbf{y}$
+and model prediction $\hat{\mathbf{y}}$
+over $q$ classes, the loss function $l$ is
+
+$$ l(\mathbf{y}, \hat{\mathbf{y}}) = - \sum_{j=1}^q y_j \log \hat{y}_j. $$
+:eqlabel:`eq_l_cross_entropy`
+
+For reasons explained later on,
+the loss function in :eqref:`eq_l_cross_entropy`
+is commonly called the *cross-entropy loss*.
+Since $\mathbf{y}$ is a one-hot vector of length $q$,
+the sum over all its coordinates $j$ vanishes for all but one term.
+Note that the loss $l(\mathbf{y}, \hat{\mathbf{y}})$
+is bounded from below by $0$
+whenever $\hat{\mathbf{y}}$ is a probability vector:
+no single entry is larger than $1$,
+hence their negative logarithm cannot be lower than $0$;
+$l(\mathbf{y}, \hat{\mathbf{y}}) = 0$ only if we predict
+the actual label with *certainty*.
+This can never happen for any finite setting of the weights
+because taking a softmax output towards $1$
+requires taking the corresponding input $o_i$ to infinity
+(or all other outputs $o_j$ for $j \neq i$ to negative infinity).
+Even if our model could assign an output probability of $0$,
+any error made when assigning such high confidence
+would incur infinite loss ($-\log 0 = \infty$).
+
+
+### Softmax and Cross-Entropy Loss
+:label:`subsec_softmax_and_derivatives`
+
+Since the softmax function
+and the corresponding cross-entropy loss are so common,
+it is worth understanding a bit better how they are computed.
+Plugging :eqref:`eq_softmax_y_and_o` into the definition of the loss
+in :eqref:`eq_l_cross_entropy`
+and using the definition of the softmax we obtain
+
+$$
+\begin{aligned}
+l(\mathbf{y}, \hat{\mathbf{y}}) &amp;=  - \sum_{j=1}^q y_j \log \frac{\exp(o_j)}{\sum_{k=1}^q \exp(o_k)} \\
+&amp;= \sum_{j=1}^q y_j \log \sum_{k=1}^q \exp(o_k) - \sum_{j=1}^q y_j o_j \\
+&amp;= \log \sum_{k=1}^q \exp(o_k) - \sum_{j=1}^q y_j o_j.
+\end{aligned}
+$$
+
+To understand a bit better what is going on,
+consider the derivative with respect to any logit $o_j$. We get
+
+$$
+\partial_{o_j} l(\mathbf{y}, \hat{\mathbf{y}}) = \frac{\exp(o_j)}{\sum_{k=1}^q \exp(o_k)} - y_j = \mathrm{softmax}(\mathbf{o})_j - y_j.
+$$
+
+In other words, the derivative is the difference
+between the probability assigned by our model,
+as expressed by the softmax operation,
+and what actually happened, as expressed
+by elements in the one-hot label vector.
+In this sense, it is very similar
+to what we saw in regression,
+where the gradient was the difference
+between the observation $y$ and estimate $\hat{y}$.
+This is not a coincidence.
+In any exponential family model,
+the gradients of the log-likelihood are given by precisely this term.
+This fact makes computing gradients easy in practice.
+
+Now consider the case where we observe not just a single outcome
+but an entire distribution over outcomes.
+We can use the same representation as before for the label $\mathbf{y}$.
+The only difference is that rather
+than a vector containing only binary entries,
+say $(0, 0, 1)$, we now have a generic probability vector,
+say $(0.1, 0.2, 0.7)$.
+The math that we used previously to define the loss $l$
+in :eqref:`eq_l_cross_entropy`
+still works well,
+just that the interpretation is slightly more general.
+It is the expected value of the loss for a distribution over labels.
+This loss is called the *cross-entropy loss* and it is
+one of the most commonly used losses for classification problems.
+We can demystify the name by introducing just the basics of information theory.
+In a nutshell, it measures the number of bits needed to encode what we see, $\mathbf{y}$,
+relative to what we predict that should happen, $\hat{\mathbf{y}}$.
+We provide a very basic explanation in the following. For further
+details on information theory see
+:citet:`Cover.Thomas.1999` or :citet:`mackay2003information`.
+
+
+
+## Information Theory Basics
+:label:`subsec_info_theory_basics`
+
+Many deep learning papers use intuition and terms from information theory.
+To make sense of them, we need some common language.
+This is a survival guide.
+*Information theory* deals with the problem
+of encoding, decoding, transmitting,
+and manipulating information (also known as data).
+
+### Entropy
+
+The central idea in information theory is to quantify the
+amount of information contained in data.
+This places a  limit on our ability to compress data.
+For a distribution $P$ its *entropy*, $H[P]$, is defined as:
+
+$$H[P] = \sum_j - P(j) \log P(j).\]</p><p>:eqlabel:<code>eq_softmax_reg_entropy</code></p><p>One of the fundamental theorems of information theory states that in order to encode data drawn randomly from the distribution <span>$P$</span>, we need at least <span>$H[P]$</span> &quot;nats&quot; to encode it :cite:<code>Shannon.1948</code>. If you wonder what a &quot;nat&quot; is, it is the equivalent of bit but when using a code with base <span>$e$</span> rather than one with base 2. Thus, one nat is <span>$\frac{1}{\log(2)} \approx 1.44$</span> bit.</p><h3 id="Surprisal"><a class="docs-heading-anchor" href="#Surprisal">Surprisal</a><a id="Surprisal-1"></a><a class="docs-heading-anchor-permalink" href="#Surprisal" title="Permalink"></a></h3><p>You might be wondering what compression has to do with prediction. Imagine that we have a stream of data that we want to compress. If it is always easy for us to predict the next token, then this data is easy to compress. Take the extreme example where every token in the stream always takes the same value. That is a very boring data stream! And not only it is boring, but it is also easy to predict. Because the tokens are always the same, we do not have to transmit any information to communicate the contents of the stream. Easy to predict, easy to compress.</p><p>However if we cannot perfectly predict every event, then we might sometimes be surprised. Our surprise is greater when an event is assigned lower probability. Claude Shannon settled on <span>$\log \frac{1}{P(j)} = -\log P(j)$</span> to quantify one&#39;s <em>surprisal</em> at observing an event <span>$j$</span> having assigned it a (subjective) probability <span>$P(j)$</span>. The entropy defined in :eqref:<code>eq_softmax_reg_entropy</code> is then the <em>expected surprisal</em> when one assigned the correct probabilities that truly match the data-generating process.</p><h3 id="Cross-Entropy-Revisited"><a class="docs-heading-anchor" href="#Cross-Entropy-Revisited">Cross-Entropy Revisited</a><a id="Cross-Entropy-Revisited-1"></a><a class="docs-heading-anchor-permalink" href="#Cross-Entropy-Revisited" title="Permalink"></a></h3><p>So if entropy is the level of surprise experienced by someone who knows the true probability, then you might be wondering, what is cross-entropy? The cross-entropy <em>from</em> <span>$P$</span> <em>to</em> <span>$Q$</span>, denoted <span>$H(P, Q)$</span>, is the expected surprisal of an observer with subjective probabilities <span>$Q$</span> upon seeing data that was actually generated according to probabilities <span>$P$</span>. This is given by <span>$H(P, Q) \stackrel{\textrm{def}}{=} \sum_j - P(j) \log Q(j)$</span>. The lowest possible cross-entropy is achieved when <span>$P=Q$</span>. In this case, the cross-entropy from <span>$P$</span> to <span>$Q$</span> is <span>$H(P, P)= H(P)$</span>.</p><p>In short, we can think of the cross-entropy classification objective in two ways: (i) as maximizing the likelihood of the observed data; and (ii) as minimizing our surprisal (and thus the number of bits) required to communicate the labels.</p><h2 id="Summary-and-Discussion"><a class="docs-heading-anchor" href="#Summary-and-Discussion">Summary and Discussion</a><a id="Summary-and-Discussion-1"></a><a class="docs-heading-anchor-permalink" href="#Summary-and-Discussion" title="Permalink"></a></h2><p>In this section, we encountered the first nontrivial loss function, allowing us to optimize over <em>discrete</em> output spaces. Key in its design was that we took a probabilistic approach, treating discrete categories as instances of draws from a probability distribution. As a side effect, we encountered the softmax, a convenient activation function that transforms outputs of an ordinary neural network layer into valid discrete probability distributions. We saw that the derivative of the cross-entropy loss when combined with softmax behaves very similarly to the derivative of squared error; namely by taking the difference between the expected behavior and its prediction. And, while we were only able to scratch the very surface of it, we encountered exciting connections to statistical physics and information theory.</p><p>While this is enough to get you on your way, and hopefully enough to whet your appetite, we hardly dived deep here. Among other things, we skipped over computational considerations. Specifically, for any fully connected layer with <span>$d$</span> inputs and <span>$q$</span> outputs, the parametrization and computational cost is <span>$\mathcal{O}(dq)$</span>, which can be prohibitively high in practice. Fortunately, this cost of transforming <span>$d$</span> inputs into <span>$q$</span> outputs can be reduced through approximation and compression. For instance Deep Fried Convnets :cite:<code>Yang.Moczulski.Denil.ea.2015</code> uses a combination of permutations, Fourier transforms, and scaling to reduce the cost from quadratic to log-linear. Similar techniques work for more advanced structural matrix approximations :cite:<code>sindhwani2015structured</code>. Lastly, we can use quaternion-like decompositions to reduce the cost to <span>$\mathcal{O}(\frac{dq}{n})$</span>, again if we are willing to trade off a small amount of accuracy for computational and storage cost :cite:<code>Zhang.Tay.Zhang.ea.2021</code> based on a compression factor <span>$n$</span>. This is an active area of research. What makes it challenging is that we do not necessarily strive for the most compact representation or the smallest number of floating point operations but rather for the solution that can be executed most efficiently on modern GPUs.</p><h2 id="Exercises"><a class="docs-heading-anchor" href="#Exercises">Exercises</a><a id="Exercises-1"></a><a class="docs-heading-anchor-permalink" href="#Exercises" title="Permalink"></a></h2><ol><li>We can explore the connection between exponential families and softmax in some more depth.<ol><li>Compute the second derivative of the cross-entropy loss <span>$l(\mathbf{y},\hat{\mathbf{y}})$</span> for softmax.</li><li>Compute the variance of the distribution given by <span>$\mathrm{softmax}(\mathbf{o})$</span> and show that it matches the second derivative computed above.</li></ol></li><li>Assume that we have three classes which occur with equal probability, i.e., the probability vector is <span>$(\frac{1}{3}, \frac{1}{3}, \frac{1}{3})$</span>.<ol><li>What is the problem if we try to design a binary code for it?</li><li>Can you design a better code? Hint: what happens if we try to encode two independent observations? What if we encode <span>$n$</span> observations jointly?</li></ol></li><li>When encoding signals transmitted over a physical wire, engineers do not always use binary codes. For instance, <a href="https://en.wikipedia.org/wiki/Ternary_signal">PAM-3</a> uses three signal levels <span>$\{-1, 0, 1\}$</span> as opposed to two levels <span>$\{0, 1\}$</span>. How many ternary units do you need to transmit an integer in the range <span>$\{0, \ldots, 7\}$</span>? Why might this be a better idea in terms of electronics?</li><li>The <a href="https://en.wikipedia.org/wiki/Bradley%E2%80%93Terry_model">Bradley–Terry model</a> uses</li></ol><p>a logistic model to capture preferences. For a user to choose between apples and oranges one assumes scores <span>$o_{\textrm{apple}}$</span> and <span>$o_{\textrm{orange}}$</span>. Our requirements are that larger scores should lead to a higher likelihood in choosing the associated item and that the item with the largest score is the most likely one to be chosen :cite:<code>Bradley.Terry.1952</code>.     1. Prove that softmax satisfies this requirement.     1. What happens if you want to allow for a default option of choosing neither apples nor oranges? Hint: now the user has three choices.</p><ol><li>Softmax gets its name from the following mapping: <span>$\textrm{RealSoftMax}(a, b) = \log (\exp(a) + \exp(b))$</span>.<ol><li>Prove that <span>$\textrm{RealSoftMax}(a, b) &gt; \mathrm{max}(a, b)$</span>.</li><li>How small can you make the difference between both functions? Hint: without loss of</li></ol>generality you can set <span>$b = 0$</span> and <span>$a \geq b$</span>.<ol><li>Prove that this holds for <span>$\lambda^{-1} \textrm{RealSoftMax}(\lambda a, \lambda b)$</span>, provided that <span>$\lambda &gt; 0$</span>.</li><li>Show that for <span>$\lambda \to \infty$</span> we have <span>$\lambda^{-1} \textrm{RealSoftMax}(\lambda a, \lambda b) \to \mathrm{max}(a, b)$</span>.</li><li>Construct an analogous softmin function.</li><li>Extend this to more than two numbers.</li></ol></li><li>The function <span>$g(\mathbf{x}) \stackrel{\textrm{def}}{=} \log \sum_i \exp x_i$</span> is sometimes also referred to as the <a href="https://en.wikipedia.org/wiki/Partition_function_(mathematics)">log-partition function</a>.<ol><li>Prove that the function is convex. Hint: to do so, use the fact that the first derivative amounts to the probabilities from the softmax function and show that the second derivative is the variance.</li><li>Show that <span>$g$</span> is translation invariant, i.e., <span>$g(\mathbf{x} + b) = g(\mathbf{x})$</span>.</li><li>What happens if some of the coordinates <span>$x_i$</span> are very large? What happens if they&#39;re all very small?</li><li>Show that if we choose <span>$b = \mathrm{max}_i x_i$</span> we end up with a numerically stable implementation.</li></ol></li><li>Assume that we have some probability distribution <span>$P$</span>. Suppose we pick another distribution <span>$Q$</span> with <span>$Q(i) \propto P(i)^\alpha$</span> for <span>$\alpha &gt; 0$</span>.<ol><li>Which choice of <span>$\alpha$</span> corresponds to doubling the temperature? Which choice corresponds to halving it?</li><li>What happens if we let the temperature approach <span>$0$</span>?</li><li>What happens if we let the temperature approach <span>$\infty$</span>?</li></ol></li></ol><p><a href="https://discuss.d2l.ai/t/46">Discussions</a></p><pre><code class="language-julia hljs"></code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../CH3.Linear_Regression/LNN_7/">« Weight Decay</a><a class="docs-footer-nextpage" href="../LCN_2/">The Image Classification Dataset »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.12.0 on <span class="colophon-date" title="Sunday 15 June 2025 19:32">Sunday 15 June 2025</span>. Using Julia version 1.11.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

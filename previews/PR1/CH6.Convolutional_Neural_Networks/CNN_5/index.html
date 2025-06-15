@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Pooling · d2l Julia</title><meta name="title" content="Pooling · d2l Julia"/><meta property="og:title" content="Pooling · d2l Julia"/><meta property="twitter:title" content="Pooling · d2l Julia"/><meta name="description" content="Documentation for d2l Julia."/><meta property="og:description" content="Documentation for d2l Julia."/><meta property="twitter:description" content="Documentation for d2l Julia."/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../CH3.Linear_Regression/LNN_1/">d2l Julia</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><span class="tocitem">Linear Neural Networks for Regression</span><ul><li><a class="tocitem" href="../../CH3.Linear_Regression/LNN_1/">Linear Regression</a></li><li><a class="tocitem" href="../../CH3.Linear_Regression/LNN_2/">Multiple Dispatch Design for Implementation</a></li><li><a class="tocitem" href="../../CH3.Linear_Regression/LNN_3/">Synthetic Regression Data</a></li><li><a class="tocitem" href="../../CH3.Linear_Regression/LNN_4/">Linear Regression Implementation from Scratch</a></li><li><a class="tocitem" href="../../CH3.Linear_Regression/LNN_5/">Concise Implementation of Linear Regression</a></li><li><a class="tocitem" href="../../CH3.Linear_Regression/LNN_6/">Generalization</a></li><li><a class="tocitem" href="../../CH3.Linear_Regression/LNN_7/">Weight Decay</a></li></ul></li><li><span class="tocitem">Linear Neural Networks for Classification</span><ul><li><a class="tocitem" href="../../CH4.Linear_Classification/LCN_1/">Softmax Regression</a></li><li><a class="tocitem" href="../../CH4.Linear_Classification/LCN_2/">The Image Classification Dataset</a></li><li><a class="tocitem" href="../../CH4.Linear_Classification/LCN_3/">Softmax Regression Implementation from Scratch</a></li><li><a class="tocitem" href="../../CH4.Linear_Classification/LCN_4/">Concise Implementation of Softmax Regression</a></li><li><a class="tocitem" href="../../CH4.Linear_Classification/LCN_5/">Generalization in Classification</a></li><li><a class="tocitem" href="../../CH4.Linear_Classification/LCN_6/">Environment and Distribution Shift</a></li></ul></li><li><span class="tocitem">Multilayer Perceptron</span><ul><li><a class="tocitem" href="../../CH5.MLP/MLP_1/">Multilayer Perceptrons</a></li><li><a class="tocitem" href="../../CH5.MLP/MLP_2/">Implementation of Multilayer Perceptrons</a></li><li><a class="tocitem" href="../../CH5.MLP/MLP_3/">Forward Propagation, Backward Propagation, and Computational Graphs</a></li><li><a class="tocitem" href="../../CH5.MLP/MLP_4/">Numerical Stability and Initialization</a></li><li><a class="tocitem" href="../../CH5.MLP/MLP_5/">Generalization in Deep Learning</a></li><li><a class="tocitem" href="../../CH5.MLP/MLP_6/">Dropout</a></li></ul></li><li><span class="tocitem">Convolutional Neural Networks</span><ul><li><a class="tocitem" href="../CNN_2/">Convolutions for Images</a></li><li><a class="tocitem" href="../CNN_3/">Padding and Stride</a></li><li><a class="tocitem" href="../CNN_4/">Multiple Input and Multiple Output Channels</a></li><li class="is-active"><a class="tocitem" href>Pooling</a><ul class="internal"><li><a class="tocitem" href="#Maximum-Pooling-and-Average-Pooling"><span>Maximum Pooling and Average Pooling</span></a></li></ul></li><li><a class="tocitem" href="../CNN_6/">Convolutional Neural Networks (LeNet)</a></li></ul></li><li><span class="tocitem">Modern Convolutional Neural Networks</span><ul><li><a class="tocitem" href="../../CH7.ModernConvolutionalNeuralNetworks/MCNN_0/">Modern Convolutional Neural Networks</a></li><li><a class="tocitem" href="../../CH7.ModernConvolutionalNeuralNetworks/MCNN_1/">Deep Convolutional Neural Networks (AlexNet)</a></li><li><a class="tocitem" href="../../CH7.ModernConvolutionalNeuralNetworks/MCNN_2/">Networks Using Blocks (VGG)</a></li><li><a class="tocitem" href="../../CH7.ModernConvolutionalNeuralNetworks/MCNN_3/">-</a></li><li><a class="tocitem" href="../../CH7.ModernConvolutionalNeuralNetworks/MCNN_4/">Multi-Branch Networks  (GoogLeNet)</a></li><li><a class="tocitem" href="../../CH7.ModernConvolutionalNeuralNetworks/MCNN_5/">-</a></li><li><a class="tocitem" href="../../CH7.ModernConvolutionalNeuralNetworks/MCNN_6/">Residual Networks (ResNet) and ResNeXt</a></li><li><a class="tocitem" href="../../CH7.ModernConvolutionalNeuralNetworks/MCNN_7/">Densely Connected Networks (DenseNet)</a></li><li><a class="tocitem" href="../../CH7.ModernConvolutionalNeuralNetworks/MCNN_8/">Designing Convolution Network Architectures</a></li></ul></li><li><span class="tocitem">Recurrent Neural Networks</span><ul><li><a class="tocitem" href="../../CH8.Recurrent_Neural_Networks/RNN_0/">Recurrent Neural Networks</a></li><li><a class="tocitem" href="../../CH8.Recurrent_Neural_Networks/RNN_1/">Working with Sequences</a></li><li><a class="tocitem" href="../../CH8.Recurrent_Neural_Networks/RNN_2/">Converting Raw Text into Sequence Data</a></li><li><a class="tocitem" href="../../CH8.Recurrent_Neural_Networks/RNN_3/">Language Models</a></li><li><a class="tocitem" href="../../CH8.Recurrent_Neural_Networks/RNN_4/">Recurrent Neural Networks</a></li><li><a class="tocitem" href="../../CH8.Recurrent_Neural_Networks/RNN_5/">Recurrent Neural Network Implementation from Scratch</a></li><li><a class="tocitem" href="../../CH8.Recurrent_Neural_Networks/RNN_6/">Concise Implementation of Recurrent Neural Networks</a></li><li><a class="tocitem" href="../../CH8.Recurrent_Neural_Networks/RNN_7/">Backpropagation Through Time</a></li></ul></li><li><span class="tocitem">Modern Recurrent Neural Networks</span><ul><li><a class="tocitem" href="../../CH9.Modern_Recurrent_Neural_Networks/MRNN7/">Sequence-to-Sequence Learning for Machine Translation</a></li><li><a class="tocitem" href="../../CH9.Modern_Recurrent_Neural_Networks/MRNN_1/">Long Short-Term Memory (LSTM)</a></li><li><a class="tocitem" href="../../CH9.Modern_Recurrent_Neural_Networks/MRNN_2/">Gated Recurrent Units (GRU)</a></li><li><a class="tocitem" href="../../CH9.Modern_Recurrent_Neural_Networks/MRNN_3/">-</a></li><li><a class="tocitem" href="../../CH9.Modern_Recurrent_Neural_Networks/MRNN_4/">Bidirectional Recurrent Neural Networks</a></li><li><a class="tocitem" href="../../CH9.Modern_Recurrent_Neural_Networks/MRNN_5/">Machine Translation and the Dataset</a></li><li><a class="tocitem" href="../../CH9.Modern_Recurrent_Neural_Networks/MRNN_6/">The Encoder–Decoder Architecture</a></li></ul></li><li><span class="tocitem">Attention Mechanisms and Transformers</span><ul><li><a class="tocitem" href="../../CH10.Attention_Mechanisms_and_Transformers/ATTN_1/">Queries, Keys, and Values</a></li><li><a class="tocitem" href="../../CH10.Attention_Mechanisms_and_Transformers/ATTN_2/">Attention Pooling by Similarity</a></li><li><a class="tocitem" href="../../CH10.Attention_Mechanisms_and_Transformers/ATTN_3/">Attention Scoring Functions</a></li><li><a class="tocitem" href="../../CH10.Attention_Mechanisms_and_Transformers/ATTN_4/">The Bahdanau Attention Mechanism</a></li><li><a class="tocitem" href="../../CH10.Attention_Mechanisms_and_Transformers/ATTN_5/">Multi-Head Attention</a></li><li><a class="tocitem" href="../../CH10.Attention_Mechanisms_and_Transformers/ATTN_6/">Self-Attention and Positional Encoding</a></li><li><a class="tocitem" href="../../CH10.Attention_Mechanisms_and_Transformers/Untitled/">-</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Convolutional Neural Networks</a></li><li class="is-active"><a href>Pooling</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Pooling</a></li></ul></nav><div class="docs-right"><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Pooling"><a class="docs-heading-anchor" href="#Pooling">Pooling</a><a id="Pooling-1"></a><a class="docs-heading-anchor-permalink" href="#Pooling" title="Permalink"></a></h1><p>:label:<code>sec_pooling</code></p><p>In many cases our ultimate task asks some global question about the image, e.g., <em>does it contain a cat?</em> Consequently, the units of our final layer  should be sensitive to the entire input. By gradually aggregating information, yielding coarser and coarser maps, we accomplish this goal of ultimately learning a global representation, while keeping all of the advantages of convolutional layers at the intermediate layers of processing. The deeper we go in the network, the larger the receptive field (relative to the input) to which each hidden node is sensitive. Reducing spatial resolution  accelerates this process,  since the convolution kernels cover a larger effective area. </p><p>Moreover, when detecting lower-level features, such as edges (as discussed in :numref:<code>sec_conv_layer</code>), we often want our representations to be somewhat invariant to translation. For instance, if we take the image <code>X</code> with a sharp delineation between black and white and shift the whole image by one pixel to the right, i.e., <code>Z[i, j] = X[i, j + 1]</code>, then the output for the new image <code>Z</code> might be vastly different. The edge will have shifted by one pixel. In reality, objects hardly ever occur exactly at the same place. In fact, even with a tripod and a stationary object, vibration of the camera due to the movement of the shutter might shift everything by a pixel or so (high-end cameras are loaded with special features to address this problem).</p><p>This section introduces <em>pooling layers</em>, which serve the dual purposes of mitigating the sensitivity of convolutional layers to location and of spatially downsampling representations.</p><pre><code class="language-julia hljs">using Pkg; Pkg.activate(&quot;d2lai&quot;)
+using d2lai, Flux, Statistics</code></pre><pre><code class="nohighlight hljs">  Activating project at `~/Projects/D2L/d2lai`</code></pre><h2 id="Maximum-Pooling-and-Average-Pooling"><a class="docs-heading-anchor" href="#Maximum-Pooling-and-Average-Pooling">Maximum Pooling and Average Pooling</a><a id="Maximum-Pooling-and-Average-Pooling-1"></a><a class="docs-heading-anchor-permalink" href="#Maximum-Pooling-and-Average-Pooling" title="Permalink"></a></h2><p>Like convolutional layers, <em>pooling</em> operators consist of a fixed-shape window that is slid over all regions in the input according to its stride, computing a single output for each location traversed by the fixed-shape window (sometimes known as the <em>pooling window</em>). However, unlike the cross-correlation computation of the inputs and kernels in the convolutional layer, the pooling layer contains no parameters (there is no <em>kernel</em>). Instead, pooling operators are deterministic, typically calculating either the maximum or the average value of the elements in the pooling window. These operations are called <em>maximum pooling</em> (<em>max-pooling</em> for short) and <em>average pooling</em>, respectively.</p><p><em>Average pooling</em> is essentially as old as CNNs. The idea is akin to  downsampling an image. Rather than just taking the value of every second (or third)  pixel for the lower resolution image, we can average over adjacent pixels to obtain  an image with better signal-to-noise ratio since we are combining the information  from multiple adjacent pixels. <em>Max-pooling</em> was introduced in  :citet:<code>Riesenhuber.Poggio.1999</code> in the context of cognitive neuroscience to describe  how information aggregation might be aggregated hierarchically for the purpose  of object recognition; there already was an earlier version in speech recognition :cite:<code>Yamaguchi.Sakamoto.Akabane.ea.1990</code>. In almost all cases, max-pooling, as it is also referred to,  is preferable to average pooling. </p><p>In both cases, as with the cross-correlation operator, we can think of the pooling window as starting from the upper-left of the input tensor and sliding across it from left to right and top to bottom. At each location that the pooling window hits, it computes the maximum or average value of the input subtensor in the window, depending on whether max or average pooling is employed.</p><p><img src="../../img/pooling.svg" alt="Max-pooling with a pooling window shape of \$2\\times 2\$. The shaded portions are the first output element as well as the input tensor elements used for the output computation: \$\\max(0, 1, 3, 4)=4\$."/> :label:<code>fig_pooling</code></p><p>The output tensor in :numref:<code>fig_pooling</code>  has a height of 2 and a width of 2. The four elements are derived from the maximum value in each pooling window:</p><p class="math-container">\[
+\max(0, 1, 3, 4)=4,\\
+\max(1, 2, 4, 5)=5,\\
+\max(3, 4, 6, 7)=7,\\
+\max(4, 5, 7, 8)=8.\\
+$$
+
+More generally, we can define a $p \times q$ pooling layer by aggregating over 
+a region of said size. Returning to the problem of edge detection, 
+we use the output of the convolutional layer
+as input for $2\times 2$ max-pooling.
+Denote by `X` the input of the convolutional layer input and `Y` the pooling layer output. 
+Regardless of whether or not the values of `X[i, j]`, `X[i, j + 1]`, 
+`X[i+1, j]` and `X[i+1, j + 1]` are different,
+the pooling layer always outputs `Y[i, j] = 1`.
+That is to say, using the $2\times 2$ max-pooling layer,
+we can still detect if the pattern recognized by the convolutional layer
+moves no more than one element in height or width.
+
+In the code below, we (**implement the forward propagation
+of the pooling layer**) in the `pool2d` function.
+This function is similar to the `corr2d` function
+in :numref:`sec_conv_layer`.
+However, no kernel is needed, computing the output
+as either the maximum or the average of each region in the input.
+
+
+```julia
+function pool2d(X, pool_size; mode = :max)
+    ph, pw = pool_size 
+    Y = zeros(size(X, 1) - ph + 1, size(X, 2) - pw + 1)
+    for i in 1:size(Y, 1)
+        for j in 1:size(Y, 2)
+            if mode == :max
+                Y[i, j] = maximum(X[i:(i+ph-1), j:(j+pw-1)])
+            elseif mode == :avg
+                Y[i, j] = mean(X[i:(i+ph-1), j:(j+pw-1)])
+            end
+        end
+    end
+    Y
+end
+```
+
+
+    pool2d (generic function with 1 method)
+
+
+We can construct the input tensor `X` in :numref:`fig_pooling` to [**validate the output of the two-dimensional max-pooling layer**].
+
+
+
+```julia
+X = [0. 1. 2.; 3. 4. 5.; 6. 7. 8.]
+pool2d(X, (2,2))
+```
+
+
+    2×2 Matrix{Float64}:
+     4.0  5.0
+     7.0  8.0
+
+
+Also, we can experiment with (**the average pooling layer**).
+
+
+
+```julia
+pool2d(X, (2, 2); mode = :avg)
+```
+
+
+    2×2 Matrix{Float64}:
+     2.0  3.0
+     5.0  6.0
+
+
+## Padding and Stride
+
+As with convolutional layers, pooling layers
+change the output shape.
+And as before, we can adjust the operation to achieve a desired output shape
+by padding the input and adjusting the stride.
+We can demonstrate the use of padding and strides
+in pooling layers via the built-in two-dimensional max-pooling layer from the deep learning framework.
+We first construct an input tensor `X` whose shape has four dimensions,
+where the number of examples (batch size) and number of channels are both 1.
+
+
+
+
+```julia
+X = reshape(0:15, 4, 4, 1, 1)
+```
+
+
+    4×4×1×1 reshape(::UnitRange{Int64}, 4, 4, 1, 1) with eltype Int64:
+    [:, :, 1, 1] =
+     0  4   8  12
+     1  5   9  13
+     2  6  10  14
+     3  7  11  15
+
+
+Since pooling aggregates information from an area, (**deep learning frameworks default to matching pooling window sizes and stride.**) For instance, if we use a pooling window of shape `(3, 3)`
+we get a stride shape of `(3, 3)` by default.
+
+
+```julia
+pool2d_layer = MaxPool((3,3))
+pool2d_layer(X)
+```
+
+
+    1×1×1×1 Array{Int64, 4}:
+    [:, :, 1, 1] =
+     10
+
+
+Needless to say, the stride and padding can be manually specified to override framework defaults if required.
+
+
+
+
+```julia
+pool2d_layer = MaxPool((3,3), pad = 1, stride=2)
+pool2d_layer(X)
+```
+
+
+    2×2×1×1 Array{Int64, 4}:
+    [:, :, 1, 1] =
+     5  13
+     7  15
+
+
+Of course, we can specify an arbitrary rectangular pooling window with arbitrary height and width respectively, as the example below shows.
+
+
+
+```julia
+pool2d_layer = MaxPool((2,3), pad = (0,1), stride=(2,3))
+pool2d_layer(X)
+```
+
+
+    2×2×1×1 Array{Int64, 4}:
+    [:, :, 1, 1] =
+     5  13
+     7  15
+
+
+## Multiple Channels
+
+When processing multi-channel input data,
+[**the pooling layer pools each input channel separately**],
+rather than summing the inputs up over channels
+as in a convolutional layer.
+This means that the number of output channels for the pooling layer
+is the same as the number of input channels.
+Below, we will concatenate tensors `X` and `X + 1`
+on the channel dimension to construct an input with two channels.
+
+
+
+```julia
+X = cat(X, X .+ 1, dims = 3)
+```
+
+
+    4×4×2×1 Array{Int64, 4}:
+    [:, :, 1, 1] =
+     0  4   8  12
+     1  5   9  13
+     2  6  10  14
+     3  7  11  15
+    
+    [:, :, 2, 1] =
+     1  5   9  13
+     2  6  10  14
+     3  7  11  15
+     4  8  12  16
+
+
+
+```julia
+pool2d_layer = MaxPool((3,3), pad = 1, stride = 2)
+pool2d_layer(X)
+```
+
+
+    2×2×2×1 Array{Int64, 4}:
+    [:, :, 1, 1] =
+     5  13
+     7  15
+    
+    [:, :, 2, 1] =
+     6  14
+     8  16
+
+
+## Summary
+
+Pooling is an exceedingly simple operation. It does exactly what its name indicates, aggregate results over a window of values. All convolution semantics, such as strides and padding apply in the same way as they did previously. Note that pooling is indifferent to channels, i.e., it leaves the number of channels unchanged and it applies to each channel separately. Lastly, of the two popular pooling choices, max-pooling is preferable to average pooling, as it confers some degree of invariance to output. A popular choice is to pick a pooling window size of $2 \times 2$ to quarter the spatial resolution of output. 
+
+Note that there are many more ways of reducing resolution beyond pooling. For instance, in stochastic pooling :cite:`Zeiler.Fergus.2013` and fractional max-pooling :cite:`Graham.2014` aggregation is combined with randomization. This can slightly improve the accuracy in some cases. Lastly, as we will see later with the attention mechanism, there are more refined ways of aggregating over outputs, e.g., by using the alignment between a query and representation vectors. 
+
+
+## Exercises
+
+1. Implement average pooling through a convolution. 
+1. Prove that max-pooling cannot be implemented through a convolution alone. 
+1. Max-pooling can be accomplished using ReLU operations, i.e., $\textrm{ReLU}(x) = \max(0, x)$.
+    1. Express $\max (a, b)$ by using only ReLU operations.
+    1. Use this to implement max-pooling by means of convolutions and ReLU layers. 
+    1. How many channels and layers do you need for a $2 \times 2$ convolution? How many for a $3 \times 3$ convolution?
+1. What is the computational cost of the pooling layer? Assume that the input to the pooling layer is of size $c\times h\times w$, the pooling window has a shape of $p_\textrm{h}\times p_\textrm{w}$ with a padding of $(p_\textrm{h}, p_\textrm{w})$ and a stride of $(s_\textrm{h}, s_\textrm{w})$.
+1. Why do you expect max-pooling and average pooling to work differently?
+1. Do we need a separate minimum pooling layer? Can you replace it with another operation?
+1. We could use the softmax operation for pooling. Why might it not be so popular?
+
+1. Implement average pooling through a convolution. 
+
+
+
+```julia
+function avg_pool(X, pool_size)
+    K = ones(pool_size)
+    return corr2d(X, K)./prod(pool_size)
+end
+```
+
+
+    avg_pool (generic function with 1 method)
+
+
+2. Prove that max-pooling cannot be implemented through a convolution alone. 
+
+   It will require us to take the maximum of a kernel and thus we cannot use corr2d like we used in previous example
+
+3. Max-pooling can be accomplished using ReLU operations, i.e., $\textrm{ReLU}(x) = \max(0, x)$.
+    1. Express $\max (a, b)$ by using only ReLU operations.
+    1. Use this to implement max-pooling by means of convolutions and ReLU layers. 
+    1. How many channels and layers do you need for a $2 \times 2$ convolution? How many for a $3 \times 3$ convolution?
+
+3. Max-pooling can be accomplished using ReLU operations, i.e., $\textrm{ReLU}(x) = \max(0, x)$.
+    1. Express $\max (a, b)$ by using only ReLU operations.
+    1. Use this to implement max-pooling by means of convolutions and ReLU layers. 
+    1. How many channels and layers do you need for a $2 \times 2$ convolution? How many for a $3 \times 3$ convolution?
+
+
+```julia
+max_relu(a,b) = relu(b-a) + a
+max_relu(a, b, c) = relu(relu(b-a) + a - c) + c
+
+
+```
+
+
+    max_pool_conv (generic function with 1 method)
+
+
+4. What is the computational cost of the pooling layer? Assume that the input to the pooling layer is of size $c\times h\times w$, the pooling window has a shape of $p_\textrm{h}\times p_\textrm{w}$ with a padding of $(p_\textrm{h}, p_\textrm{w})$ and a stride of $(s_\textrm{h}, s_\textrm{w})$.
+
+
+    Number of pooling operations is : $$ \lfloor (h + p_h + s_h) / s_h \rfloor \times \lfloor (w + p_w + s_w) / s_w \rfloor \times c\]</p><pre><code class="nohighlight hljs">Number of operation per pooling operation: $$ p_h \times p_w $$
+Total operations: $$ \lfloor (h + p_h + s_h) / s_h \rfloor \times \lfloor (w + p_w + s_w) / s_w \rfloor \times c \times p_h \times p_w $$</code></pre><ol><li><p>Why do you expect max-pooling and average pooling to work differently?</p><p>Max Pooling allows the dominant pixel to progress to further layers, while average pooling ensures that we down sample the pixels so that the information from each pixel progress to the further layers</p></li></ol><ol><li><p>Do we need a separate minimum pooling layer? Can you replace it with another operation?</p><p>No we donot need a separate minimum pooling layer. We would usually reverse the maxpool such that x = -MaxPool(-x) </p></li><li><p>We could use the softmax operation for pooling. Why might it not be so popular?</p><p>Softmax is computationally expensive to begin with. Other than that, assigning probabilities to each output doesnot make much sense in this context</p></li></ol></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../CNN_4/">« Multiple Input and Multiple Output Channels</a><a class="docs-footer-nextpage" href="../CNN_6/">Convolutional Neural Networks (LeNet) »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.12.0 on <span class="colophon-date" title="Sunday 15 June 2025 19:32">Sunday 15 June 2025</span>. Using Julia version 1.11.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
