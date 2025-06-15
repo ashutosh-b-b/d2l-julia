@@ -12,7 +12,7 @@ fi
 # Iterate over each subdirectory
 PARENT_DIR="$(dirname "$TARGET_DIR")"
 MARKDOWN_DIR="$PARENT_DIR/Julia_Markdown/src"
-cp -r "$TARGET_DIR/img/" "$MARKDOWN_DIR"
+cp -r "$TARGET_DIR/img/" "$MARKDOWN_DIR/img/"
 for dir in "$TARGET_DIR"/*/; do
     # Check if there are any matches
     [ -d "$dir" ] || continue
