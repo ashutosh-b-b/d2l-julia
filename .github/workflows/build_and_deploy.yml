@@ -27,6 +27,9 @@ jobs:
 
       - name: Run Markdown Generator
         run: .github/scripts/generate_markdown.sh Julia_Notebooks/
+      
+      - name: Copy Images from Notebooks to Markdown
+        run: cp -r Julia_Notebooks/img Julia_Markdown/src/
 
       - name: Upload Generated Markdown
         uses: actions/upload-artifact@v4
@@ -38,7 +41,7 @@ jobs:
         uses: julia-actions/setup-julia@v1
         with:
           version: '1.11.4'
-          
+
       - name: Install Dependencies for Docs
         run: |
           julia --project=Julia_Markdown -e 'using Pkg; Pkg.instantiate(); Pkg.precompile()'
