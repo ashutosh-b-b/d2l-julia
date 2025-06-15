@@ -13,7 +13,8 @@ fi
 PARENT_DIR="$(dirname "$TARGET_DIR")"
 MARKDOWN_DIR="$PARENT_DIR/Julia_Markdown/src"
 mkdir "$MARKDOWN_DIR/img"
-cp -r "$TARGET_DIR/img/"* "$MARKDOWN_DIR/img/"
+cp -r Julia_Notebooks/img Julia_Markdown/
+
 for dir in "$TARGET_DIR"/*/; do
     # Check if there are any matches
     [ -d "$dir" ] || continue
