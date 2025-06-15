@@ -15,3 +15,5 @@ function to_gpu(model)
         Flux.gpu(x)
     end
 end
+
+construct_nt_args(; args...) = NamedTuple(args)
