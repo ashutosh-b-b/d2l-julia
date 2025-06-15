@@ -2,7 +2,11 @@ name: Build and Deploy
 
 on:
   push:
-  workflow_dispatch:
+    branches:
+      - main
+    tags:
+      - 'v*'
+  pull_request:
 
 jobs:
   build:
