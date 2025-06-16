@@ -4,7 +4,7 @@ from pathlib import Path
 
 # Regex to match from <?xml ...?> to </svg>
 SVG_BLOCK_RE = re.compile(
-    r"(?s)(<\?xml\b[^>]*?\?>\s*<svg\b.*?</svg>)"
+    r"(?s)<\?xml\b[^>]*?\?>\s*(<svg\b.*?</svg>)"
 )
 
 # Regex to match ANSI escape sequences (e.g., \x1b[36m, \x1b[1m, etc.)
