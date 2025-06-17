@@ -24,3 +24,6 @@ for dir in "$TARGET_DIR"/*/; do
 done
 
 python3 .github/scripts/formatter.py "$MARKDOWN_DIR"
+python3 .github/scripts/heading.py "$MARKDOWN_DIR"
+python3 .github/scripts/image.py "$MARKDOWN_DIR"
+python3 .github/scripts/citation.py "$MARKDOWN_DIR"
