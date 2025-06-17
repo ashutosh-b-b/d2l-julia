@@ -1,4 +1,6 @@
 using Documenter 
+using DocumenterVitepress
+using DocumenterCitations
 
 mathengine = MathJax3(Dict(:loader => Dict("load" => ["[tex]/require", "[tex]/mathtools"]),
     :tex => Dict("inlineMath" => [["\$", "\$"], ["\\(", "\\)"]],
@@ -40,24 +42,40 @@ pages = map(chapter_titles, chapter_folders) do title, folder
     title => map(f -> joinpath(folder, f), md_files)
 end
 
+bib = CitationBibliography(
+    joinpath(@__DIR__, "src", "ref.bib");
+    style=:numeric
+)
+
 makedocs(
     sitename = "d2l Julia",
     authors = "Ashutosh Bharambe",
-    format = Documenter.HTML(;
-        prettyurls = get(ENV, "CI", "") == "true",
-        assets = String[],
-        mathengine,
-        edit_link = nothing,
-        size_threshold = nothing,
-    ),
+    # format = Documenter.HTML(;
+    #     prettyurls = get(ENV, "CI", "") == "true",
+    #     assets = String[],
+    #     mathengine,
+    #     edit_link = nothing,
+    #     size_threshold = nothing,
+    # ),
+    format=DocumenterVitepress.MarkdownVitepress(
+        repo = "https://github.com/ashutosh-b-b/d2l-julia", devbranch = "master", devurl = "dev"),
+
     repo = "https://github.com/ashutosh-b-b/d2l-julia",
     pagesonly = true,
-    pages = pages,
+    pages = ["Home" => "index.md"; 
+        "Chapters" => [
+            "chapters.md";
+            pages[1:8]
+        ];
+        "References" => "references.md"
+    ],
+    # pages = pages,
     build = joinpath(@__DIR__, "build"),
     warnonly = [:missing_docs],
     linkcheck = false,
     doctest = false,
-    clean = true
+    clean = true,
+    plugins = [bib]
 )
 
 # makedocs(;
@@ -122,7 +140,7 @@ makedocs(
 #     pages = pages,
 #     )
 
-deploydocs(;
+DocumenterVitepress.deploydocs(;
     repo = "github.com/ashutosh-b-b/d2l-julia",
     branch = "gh-pages",
     push_preview = true)
