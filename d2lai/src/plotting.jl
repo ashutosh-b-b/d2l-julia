@@ -8,8 +8,8 @@ struct ProgressBoard
     labels_to_idx::AbstractDict
     anim::Animation
     function ProgressBoard(xlabel, y_labels = []; xscale = :identity, yscale = :identity, colors = [:blue, :red, :orange], size = (25, 25))
-        plt = plot(fill([], length(y_labels)), fill([], length(y_labels)), xlabel = xlabel, xscale = xscale, yscale= yscale, labels  = y_labels)
-        labels_to_idx = Dict(y_labels .=> collect(1:length(y_labels)))
+        plt = plot(; xlabel = xlabel, xscale = xscale, yscale= yscale, labels  = y_labels)
+        labels_to_idx = Dict(vec(y_labels) .=> collect(1:length(y_labels)))
         new(xlabel, xscale, yscale, colors, size, plt, labels_to_idx, Animation())
     end    
 end
@@ -20,8 +20,8 @@ function draw(board::ProgressBoard, x::Number, y::Number, label::String)
         push!(board.plt, idx[1], x, y)
     else
         idx = length(keys(board.labels_to_idx)) + 1
-        board.labels_to_idx[labels] = idx
-        plot!(board.plt, x, y, label = label, xlabel = board.xlabel)
+        board.labels_to_idx[label] = idx
+        plot!(board.plt, [x], [y], label = label, xlabel = board.xlabel)
     end
     frame(board.anim)
 end
