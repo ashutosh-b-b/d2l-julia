@@ -278,3 +278,48 @@ function build(data::MTFraEng, src_sentences, tgt_sentences)
     arrays, _ = _build_arrays(MTFraEng, raw_text, data.args.num_steps, data.src_vocab, data.tgt_vocab)
     arrays
 end
+
+
+function read_data_bananas(extracted_folder; train = true)
+    folder = train ? "bananas_train" : "bananas_val"
+    folder_path = joinpath(extracted_folder, "banana-detection", folder)
+    df = DataFrame(CSV.File(joinpath(folder_path, "label.csv")))
+    img_names = df[!, 1]
+    targets = df[!, 2:end] |> Array 
+    targets = permutedims(targets, (2, 1))
+    images = map(img_names) do img_name 
+        img = Images.load(joinpath(folder_path, "images", img_name))
+        img = Image(img)
+        img_tensor = apply(ImageToTensor(), img) |> itemdata
+        img_tensor = permutedims(img_tensor, (2,1,3))
+    end
+    
+    images = stack(images; dims = 4)
+
+    images, Flux.unsqueeze(targets, dims = 1) ./ 256
+end
+
+struct BananaDataset{T,V,A} <: AbstractData 
+    train_data::T 
+    val_data::V 
+    args::A
+end
+
+function BananaDataset(; batchsize = 32)
+    file = d2lai._download("banana-detection.zip")
+
+    extracted_folder = d2lai._extract(file)
+
+    train_data = read_data_bananas(extracted_folder; train = true)
+    val_data = read_data_bananas(extracted_folder; train = false)
+    args = (; extracted_folder, batchsize)
+    BananaDataset(train_data, val_data, args)
+end
+
+function get_dataloader(data::BananaDataset; train = true)
+    if train
+        Flux.DataLoader(data.train_data; batchsize = data.args.batchsize, shuffle = true)
+    else
+        Flux.DataLoader(data.val_data; batchsize = data.args.batchsize)
+    end
+end
