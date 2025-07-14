@@ -8,6 +8,9 @@ const DATA_URL = "http://d2l-data.s3-accelerate.amazonaws.com/"
 include("data.jl")
 using CUDA
 using p7zip_jll
+using DataAugmentation 
+using CSV, DataFrames 
+
 
 export SyntheticRegressionData, get_dataloader, train_dataloader, val_dataloader, AbstractData
 
@@ -31,6 +34,12 @@ include("models/rnn.jl")
 export RNNLMScratch, RNNModelConcise
 
 include("models/transformer.jl")
+
+include("models/cnn.jl")
+export ResNet
+
+include("vision.jl")
+export multibox_prior, multibox_target
 
 export construct_nt_args
 end
