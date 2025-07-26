@@ -10,6 +10,9 @@ using CUDA
 using p7zip_jll
 using DataAugmentation 
 using CSV, DataFrames 
+using MPI, NCCL, cuDNN
+using Flux.Zygote
+
 
 
 export SyntheticRegressionData, get_dataloader, train_dataloader, val_dataloader, AbstractData

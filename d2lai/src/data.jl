@@ -323,3 +323,135 @@ function get_dataloader(data::BananaDataset; train = true)
         Flux.DataLoader(data.val_data; batchsize = data.args.batchsize)
     end
 end
+
+struct VOCSegDataSet{T, V, A} <: d2lai.AbstractData 
+    train::T 
+    val::V 
+    args::A
+end
+
+__filter_size(img, sz) = size(img, 1) >= sz[1] && size(img, 2) >= sz[2]
+
+
+function read_voc_images(extracted_folder; train = true)
+    txt_file =  train ? "train.txt" : "val.txt"
+    voc_dir = joinpath(extracted_folder, "VOCdevkit/VOC2012")
+    txt_fname = joinpath(voc_dir, "ImageSets", "Segmentation", txt_file)
+    lines = readlines(txt_fname)
+    feature_imgs = map(lines) do img_name
+        img = Images.load(joinpath(voc_dir, "JPEGImages", "$img_name.jpg"))
+    end 
+    labels = map(lines) do img_name
+        img = Images.load(joinpath(voc_dir, "SegmentationClass", "$img_name.png"))
+    end 
+    feature_imgs, labels
+end
+
+function voc_colormap2label()
+    colormap2label = fill(0, 256^3)  # use -1 for unknown labels
+    for (i, cmap) in enumerate(VOC_COLORMAP)
+        r, g, b = cmap
+        index = (r * 256 + g) * 256 + b + 1  # still 1-based indexing in Julia
+        colormap2label[index] = i - 1  # shift class index: 0 to 20
+    end
+    return colormap2label
+end
+
+# function voc_label_indices(colormap, colormap2label)
+#     h, w = size(colormap, 1), size(colormap, 2)
+#     idx = Array{Int}(undef, h, w)
+
+#     @inbounds for j in 1:w, i in 1:h
+#         r = colormap[i, j, 1]
+#         g = colormap[i, j, 2]
+#         b = colormap[i, j, 3]
+#         index = (r * 256 + g) * 256 + b + 1
+#         idx[i, j] = colormap2label[index]
+#     end
+
+#     return idx
+# end
+function voc_label_indices(colormap, colormap2label)
+    h, w = size(colormap, 1), size(colormap, 2)
+    idx = Array{Int}(undef, h, w)
+
+    @inbounds for j in 1:w, i in 1:h
+        r = colormap[i, j, 1]
+        g = colormap[i, j, 2]
+        b = colormap[i, j, 3]
+        index = (r * 256 + g) * 256 + b + 1
+        idx[i, j] = colormap2label[index]  # now ranges from 0–20 or -1
+    end
+
+    return idx
+end
+
+function voc_rand_corp(feature, label, ht, width)
+    tfm = DataAugmentation.compose(RandomCrop((ht, width)), ImageToTensor())
+    randstate = DataAugmentation.getrandstate(tfm)
+    feature_ = apply(tfm, Image(feature); randstate) |> itemdata |> collect
+    label_ = apply(tfm, Image(label); randstate) |> itemdata |> collect
+    feature_, label_
+end
+function VOCSegDataSet(crop_size; batchsize = 64)
+    file = d2lai._download("VOCtrainval_11-May-2012.tar")
+    extracted_folder = d2lai._extract(file)
+    train_features, train_labels = read_voc_images(extracted_folder; train = true)
+    val_features, val_labels = read_voc_images(extracted_folder; train = false)
+
+    colormap2label = voc_colormap2label()
+    
+    train_features = filter(f -> __filter_size(f, crop_size), train_features)
+    train_labels = filter(f -> __filter_size(f, crop_size), train_labels)
+    
+    val_features = filter(f -> __filter_size(f, crop_size), val_features)
+    val_labels = filter(f -> __filter_size(f, crop_size), val_labels)
+    
+    corped_train = voc_rand_corp.(train_features, train_labels, Ref(crop_size[1]), Ref(crop_size[2]))
+    corped_val = voc_rand_corp.(val_features, val_labels, Ref(crop_size[1]), Ref(crop_size[2]))
+    
+    train_features, train_labels = first.(corped_train), last.(corped_train)
+    val_features, val_labels = first.(corped_val), last.(corped_val)
+
+    train_labels = map(l -> Int.(l .* 255), train_labels)
+    val_labels = map(l -> Int.(l .* 255), val_labels)
+
+    train_labels = voc_label_indices.(train_labels, Ref(colormap2label))
+    val_labels = voc_label_indices.(val_labels, Ref(colormap2label))
+
+    train_features, train_labels = stack(train_features; dims = 4), stack(train_labels; dims = 3)
+    val_features, val_labels = stack(val_features; dims = 4), stack(val_labels; dims = 3)
+
+    VOCSegDataSet(
+        (train_features, train_labels),
+        (val_features, val_labels),
+        (; colormap2label, crop_size, batchsize)
+    )
+end
+
+
+function load_data_voc(data::VOCSegDataSet)
+    train_iter =  get_dataloader(data)
+    test_iter = get_dataloader(data; train = false)
+    return train_iter, test_iter
+end
+
+VOC_COLORMAP = [[0, 0, 0], [128, 0, 0], [0, 128, 0], [128, 128, 0],
+                [0, 0, 128], [128, 0, 128], [0, 128, 128], [128, 128, 128],
+                [64, 0, 0], [192, 0, 0], [64, 128, 0], [192, 128, 0],
+                [64, 0, 128], [192, 0, 128], [64, 128, 128], [192, 128, 128],
+                [0, 64, 0], [128, 64, 0], [0, 192, 0], [128, 192, 0],
+                [0, 64, 128]]
+
+#@save
+VOC_CLASSES = ["background", "aeroplane", "bicycle", "bird", "boat",
+               "bottle", "bus", "car", "cat", "chair", "cow",
+               "diningtable", "dog", "horse", "motorbike", "person",
+               "potted plant", "sheep", "sofa", "train", "tv/monitor"]
+function d2lai.get_dataloader(data::VOCSegDataSet; train = true)
+    if train 
+        return Flux.DataLoader(data.train; shuffle = true, batchsize = data.args.batchsize)
+    else
+        return Flux.DataLoader(data.val; shuffle = false, batchsize = data.args.batchsize)
+    end
+end
