@@ -1579,9 +1579,7 @@ version = "0.7.2"
 
 [[Metalhead]]
 deps = ["Artifacts", "BSON", "ChainRulesCore", "Flux", "Functors", "JLD2", "LazyArtifacts", "MLUtils", "NNlib", "PartialFunctions", "Random", "Statistics"]
-git-tree-sha1 = "1df7d19e93bc76b197d0a86a97754791e476bdfc"
-repo-rev = "master"
-repo-url = "https://github.com/JoshuaBillson/Metalhead.jl"
+git-tree-sha1 = "7d3cdd8acb8ccdf82bb80d07f33f020b0976ddc5"
 uuid = "dbeba491-748d-5e0e-a39e-b530a07fa0cc"
 version = "0.9.5"
 weakdeps = ["CUDA"]

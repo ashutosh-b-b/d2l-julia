@@ -163,3 +163,65 @@ function multibox_target(anchors, labels, device = cpu; iou_threshold = 0.5)
     offset, assigned_bbox, class_labels = getindex.(out, 1), getindex.(out, 2), getindex.(out, 3)
     reduce(hcat, offset), reduce(hcat, assigned_bbox), reduce(hcat, class_labels)
 end
+
+
+function nms(boxes, scores, iou_threshold)
+    B = sortperm(scores; rev=true) |> cpu
+    boxes = boxes |> cpu
+    keep = []
+    keep_idx = Int[]
+
+    while !isempty(B)
+        i = B[1]
+        push!(keep_idx, i)
+        length(B) == 1 && break
+        ious = d2lai.box_iou(view(boxes, i:i, :), view(boxes, B[2:end], :))
+        ious_vec = vec(ious)
+        mask = ious_vec .<= iou_threshold
+        B = B[findall(mask) .+ 1]  # skip current top index
+    end
+
+    return keep_idx
+end
+
+function offset_inverse(anchors, offset_pred)
+    anc = d2lai.box_corner_to_center(anchors)  # (num_anchors, 4)
+    pred_xy = (offset_pred[:, 1:2] .* anc[:, 3:4]) ./ 10.0 .+ anc[:, 1:2]
+    pred_wh = exp.(offset_pred[:, 3:4] ./ 5.0) .* anc[:, 3:4]
+    pred_center = hcat(pred_xy, pred_wh)
+    return d2lai.boxes_center_to_corner(pred_center)
+end
+function multibox_detection(cls_probs, offset_preds, anchors; nms_threshold = 0.5, pos_threshold =1e-6)
+    device = isa(cls_probs, CuArray) ? gpu : cpu 
+    num_anchors = size(anchors, 1)
+    batch_size = size(cls_probs)[end]
+    out = map(1:batch_size) do b 
+        cls_prob, offset_pred = cls_probs[:, :, b], reshape(offset_preds[:, b], 4, :)
+        offset_pred = permutedims(offset_pred, (2,1))
+        cls_prob_fg = cls_prob[2:end, :]  # remove background (class 0)
+        conf, class_id = maximum(cls_prob_fg; dims = 1), getindex.(argmax(cls_prob_fg, dims = 1), 1) .+ 1
+        predicted_bb = offset_inverse(anchors, offset_pred)
+        keep = nms(predicted_bb, vec(conf), 0.5) |> cpu
+        all_idx = collect(1:num_anchors) |> cpu 
+        combined = vcat(keep, all_idx) |> cpu
+        counts = countmap(combined)
+        non_keep = [i for (i, c) in counts if c == 1]
+
+        # Order: keep first, then non-keep
+        all_sorted = vcat(keep, non_keep)
+        class_out = copy(class_id)
+        class_out[non_keep] .= -1  # background
+        class_out = class_out[all_sorted]
+        conf_out = conf[all_sorted]
+        bb_out = predicted_bb[all_sorted, :]
+
+        # Threshold low confidence predictions
+        low_conf_mask = conf_out .< pos_threshold
+        class_out[low_conf_mask] .= -1
+        conf_out[low_conf_mask] .= 1 .- conf_out[low_conf_mask]
+
+        hcat(Float32.(class_out), conf_out, bb_out)
+
+    end
+    
+end
