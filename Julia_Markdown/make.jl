@@ -67,7 +67,7 @@ makedocs(
     pages = ["Home" => "index.md"; 
         "Chapters" => [
             "chapters.md";
-            pages[1:8]
+            pages[1:9]
         ];
         "References" => "references.md"
     ],
