@@ -14,7 +14,7 @@ hero:
   actions:
     - theme: brand
       text: Go to Chapters
-      link: /Chapters
+      link: /chapters
   
 ```
 
