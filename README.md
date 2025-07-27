@@ -72,4 +72,5 @@ We welcome contributions!
 
 ## 🙌 Acknowledgments
 Original book: Dive into Deep Learning by Aston Zhang, Zachary C. Lipton, Mu Li, and Alex J. Smola
+
 Julia libraries: Flux.jl, Zygote.jl, MLDatasets.jl
