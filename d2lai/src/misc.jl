@@ -17,3 +17,26 @@ function to_gpu(model)
 end
 
 construct_nt_args(; args...) = NamedTuple(args)
+
+function show_images(images::AbstractArray{T, 4}, cols, rows) where T
+    imgs = map(eachslice(images; dims = 4)) do img_tensor
+        img = colorview(RGB, permutedims(img_tensor, (3,2,1)))
+    end 
+    mosaicview(imgs..., nrow = rows)
+end
+
+function show_images(images::AbstractVector{<:AbstractArray}, cols, rows)
+    imgs = map(images) do img_tensor
+        img = colorview(RGB, permutedims(img_tensor, (3,2,1)))
+    end 
+    mosaicview(imgs..., nrow = rows)
+end
+
+function show_images(images::AbstractVector{<:AbstractMatrix{<:RGB}}, cols, rows)
+    
+    mosaicview(images..., ncol = cols)
+end
+
+function show_image(image::AbstractArray{<:Real})
+    img = colorview(RGB, permutedims(image, (3,1,2)))
+end

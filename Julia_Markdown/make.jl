@@ -21,7 +21,8 @@ chapter_titles = [
     "Modern Convolutional Neural Networks",
     "Recurrent Neural Networks",
     "Modern Recurrent Neural Networks",
-    "Attention Mechanisms and Transformers"
+    "Attention Mechanisms and Transformers",
+    "Computer Vision"
 ]
 
 chapter_folders = [
@@ -34,6 +35,7 @@ chapter_folders = [
  "CH8.Recurrent_Neural_Networks",
  "CH9.Modern_Recurrent_Neural_Networks",
  "CH10.Attention_Mechanisms_and_Transformers",
+ "CH11.Computer_Vision"
 ]
 
 pages = map(chapter_titles, chapter_folders) do title, folder
@@ -65,7 +67,7 @@ makedocs(
     pages = ["Home" => "index.md"; 
         "Chapters" => [
             "chapters.md";
-            pages[1:8]
+            pages[1:9]
         ];
         "References" => "references.md"
     ],

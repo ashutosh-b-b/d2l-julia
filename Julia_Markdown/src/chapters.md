@@ -15,3 +15,5 @@ This page provides a high-level overview of each chapter and serves as an index 
 6. [Modern Convolutional Neural Networks](@ref "chap_modern_cnn")
 7. [Recurrent Neural Networks](@ref chap_rnn)
 8. [Modern Recurrent Neural Networks](@ref "sec_lstm")
+9. [Attention Mechanisms and Transformers](@ref "chap_attention-and-transformers")
+10. [Computer Vision](@ref "chap_cv")
